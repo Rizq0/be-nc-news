@@ -32,14 +32,6 @@ describe("Full API Test Suite", () => {
           });
         });
     });
-    test(`404: /api/topic returns a error with message "Route not found" when given a bad path`, () => {
-      return request(app)
-        .get("/api/topic")
-        .expect(404)
-        .then(({ body: { msg } }) => {
-          expect(msg).toBe("Route not found");
-        });
-    });
   });
   describe("/api", () => {
     test("200: /api fetches all api endpoints available to the user", () => {
@@ -53,6 +45,24 @@ describe("Full API Test Suite", () => {
           Object.keys(endpointData).forEach((key) => {
             expect(body).toHaveProperty(key);
           });
+        });
+    });
+  });
+  describe("Error Handling", () => {
+    test("404: Route not found when given a bad path", () => {
+      return request(app)
+        .get("/api/topic")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Route not found");
+        });
+    });
+    test("404: Route not found when given a empty path", () => {
+      return request(app)
+        .get("")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Route not found");
         });
     });
   });
