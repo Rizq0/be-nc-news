@@ -2,7 +2,9 @@ const express = require("express");
 const app = express();
 const { getAllTopics } = require("./controllers/topic-controllers");
 const { serverErrorHandler } = require("./error-handlers");
+const { getApiEndpoints } = require("./controllers/api-controllers");
 
+app.get("/api", getApiEndpoints);
 app.get("/api/topics", getAllTopics);
 
 app.all("/*", (req, res) => {

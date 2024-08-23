@@ -3,6 +3,7 @@ const { app } = require("../api/app");
 const connection = require("../db/connection");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data/index");
+const endpointData = require("../endpoints.json");
 
 beforeEach(() => {
   return seed(testData);
@@ -37,6 +38,21 @@ describe("Full API Test Suite", () => {
         .expect(404)
         .then(({ body: { msg } }) => {
           expect(msg).toBe("Route not found");
+        });
+    });
+  });
+  describe("/api", () => {
+    test("200: /api fetches all api endpoints available to the user", () => {
+      return request(app)
+        .get("/api")
+        .expect(200)
+        .then(({ body }) => {
+          expect(Object.keys(body).length).toEqual(
+            Object.keys(endpointData).length
+          );
+          Object.keys(endpointData).forEach((key) => {
+            expect(body).toHaveProperty(key);
+          });
         });
     });
   });
