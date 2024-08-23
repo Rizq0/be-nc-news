@@ -8,7 +8,7 @@ beforeEach(() => {
   return seed(testData);
 });
 
-afterEach(() => {
+afterAll(() => {
   return connection.end();
 });
 
@@ -29,6 +29,14 @@ describe("Full API Test Suite", () => {
               })
             );
           });
+        });
+    });
+    test(`404: /api/topic returns a error with message "Route not found" when given a bad path`, () => {
+      return request(app)
+        .get("/api/topic")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Route not found");
         });
     });
   });
