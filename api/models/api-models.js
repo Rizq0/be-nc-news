@@ -1,3 +1,5 @@
+const endpointData = require("../../endpoints.json");
+
 exports.fetchApiEndpoints = () => {
-  // not used as of yet
+  return endpointData;
 };
