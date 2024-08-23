@@ -20,7 +20,6 @@ describe("Full API Test Suite", () => {
         .get("/api/topics")
         .expect(200)
         .then(({ body: { topics } }) => {
-          console.log(topics);
           expect(topics.length).toBe(topicData.length);
           topics.forEach((topic) => {
             expect(topic).toEqual(
