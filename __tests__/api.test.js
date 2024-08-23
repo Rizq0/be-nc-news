@@ -3,6 +3,7 @@ const { app } = require("../api/app");
 const connection = require("../db/connection");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data/index");
+const endpointData = require("../endpoints.json");
 
 beforeEach(() => {
   return seed(testData);
@@ -20,7 +21,7 @@ describe("Full API Test Suite", () => {
         .get("/api/topics")
         .expect(200)
         .then(({ body: { topics } }) => {
-          expect(topics.length).toBe(topicData.length);
+          expect(topics.length).toBe(3);
           topics.forEach((topic) => {
             expect(topic).toEqual(
               expect.objectContaining({
@@ -31,9 +32,34 @@ describe("Full API Test Suite", () => {
           });
         });
     });
-    test(`404: /api/topic returns a error with message "Route not found" when given a bad path`, () => {
+  });
+  describe("/api", () => {
+    test("200: /api fetches all api endpoints available to the user", () => {
+      return request(app)
+        .get("/api")
+        .expect(200)
+        .then(({ body }) => {
+          expect(Object.keys(body).length).toEqual(
+            Object.keys(endpointData).length
+          );
+          Object.keys(endpointData).forEach((key) => {
+            expect(body).toHaveProperty(key);
+          });
+        });
+    });
+  });
+  describe("Error Handling", () => {
+    test("404: Route not found when given a bad path", () => {
       return request(app)
         .get("/api/topic")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Route not found");
+        });
+    });
+    test("404: Route not found when given a empty path", () => {
+      return request(app)
+        .get("")
         .expect(404)
         .then(({ body: { msg } }) => {
           expect(msg).toBe("Route not found");
