@@ -174,7 +174,7 @@ describe("Full API Test Suite", () => {
           });
         });
     });
-    test("400: /api/articles/2/comments return a 400 error when the request body key is incorrect", () => {
+    test("400: /api/articles/2/comments return a 400 error when a request body key is incorrect", () => {
       const body = {
         usernamekeyincorrect: "lurker",
         body: "Born from fire",
@@ -213,7 +213,7 @@ describe("Full API Test Suite", () => {
           expect(msg).toBe("Not found");
         });
     });
-    test("400: /api/articles/idonotexist/comments", () => {
+    test("400: /api/articles/idonotexist/comments return a 400 error when an article id given is the wrong data type", () => {
       const body = {
         username: "lurker",
         body: "Born from fire",
