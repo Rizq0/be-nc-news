@@ -1,4 +1,5 @@
 const connection = require("../../db/connection");
+const format = require("pg-format");
 
 exports.fetchArticleId = (params) => {
   const { article_id } = params;
@@ -21,14 +22,13 @@ exports.fetchArticleId = (params) => {
 
 exports.fetchAllArticles = (order) => {
   const orderAllowed = ["ASC", "DESC"];
-  let queryString = `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.comment_id) AS comment_count FROM articles LEFT JOIN comments USING (article_id) GROUP BY articles.article_id `;
-
   if (!orderAllowed.includes(order)) {
     return Promise.reject({ status: 400, msg: "Bad request" });
   }
-
-  queryString += `ORDER BY articles.created_at ${order}`;
-
+  const queryString = format(
+    `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.comment_id) AS comment_count FROM articles LEFT JOIN comments USING (article_id) GROUP BY articles.article_id ORDER BY articles.created_at %s`,
+    [order]
+  );
   return connection.query(queryString).then(({ rows }) => {
     return rows;
   });
