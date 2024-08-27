@@ -109,6 +109,7 @@ describe("Full API Test Suite", () => {
         .get("/api/articles/5/comments")
         .expect(200)
         .then(({ body: { comments } }) => {
+          console.log(comments);
           expect(comments.length).toBe(2);
           comments.forEach((comment) => {
             expect(comment).toHaveProperty("comment_id");
