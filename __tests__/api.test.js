@@ -82,6 +82,27 @@ describe("Full API Test Suite", () => {
         });
     });
   });
+  describe("/api/articles", () => {
+    test("200 /api/articles returns array of all the articles in descending data order", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles.length).toBe(13);
+          articles.forEach((article) => {
+            expect(article).toHaveProperty("author");
+            expect(article).toHaveProperty("title");
+            expect(article).toHaveProperty("article_id");
+            expect(article).toHaveProperty("topic");
+            expect(article).toHaveProperty("created_at");
+            expect(article).toHaveProperty("votes");
+            expect(article).toHaveProperty("article_img_url");
+            expect(article).toHaveProperty("comment_count");
+          });
+          expect(articles).toBeSortedBy("created_at", { descending: true });
+        });
+    });
+  });
   describe("Error Handling", () => {
     test("404: Route not found when given a bad path", () => {
       return request(app)

@@ -7,10 +7,14 @@ const {
   serverErrorHandler,
 } = require("./error-handlers");
 const { getApiEndpoints } = require("./controllers/api-controllers");
-const { getArticleById } = require("../api/controllers/article-controllers");
+const {
+  getArticleById,
+  getAllArticles,
+} = require("../api/controllers/article-controllers");
 
 app.get("/api", getApiEndpoints);
 app.get("/api/topics", getAllTopics);
+app.get("/api/articles", getAllArticles);
 app.get("/api/articles/:article_id", getArticleById);
 
 app.all("/*", (req, res) => {
