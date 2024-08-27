@@ -54,7 +54,6 @@ describe("Full API Test Suite", () => {
         .get("/api/articles/1")
         .expect(200)
         .then(({ body: { article } }) => {
-          console.log(article);
           expect(article.length).toBe(1);
           expect(article[0]).toHaveProperty("author");
           expect(article[0]).toHaveProperty("title");
@@ -79,7 +78,6 @@ describe("Full API Test Suite", () => {
         .get("/api/articles/20")
         .expect(404)
         .then(({ body: { msg } }) => {
-          console.log(msg);
           expect(msg).toBe("Not found");
         });
     });
