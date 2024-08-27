@@ -67,5 +67,20 @@
         }
       ]
     }
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "an existing user can post a new comment, which the return will be confirmation of the new comment",
+    "formatOfBody": { "username": "user", "body": "Sentence goes here" },
+    "queries": [],
+    "exampleResponse": {
+      "comment": {
+        "comment_id": 1,
+        "body": "Born from fire",
+        "article_id": 2,
+        "author": "lurker",
+        "votes": 0,
+        "created_at": "2020-10-31T03:03:00.000Z"
+      }
+    }
   }
 }
