@@ -54,6 +54,7 @@ describe("Full API Test Suite", () => {
         .get("/api/articles/1")
         .expect(200)
         .then(({ body: { article } }) => {
+          console.log(article);
           expect(article.length).toBe(1);
           expect(article[0]).toHaveProperty("author");
           expect(article[0]).toHaveProperty("title");
@@ -63,6 +64,14 @@ describe("Full API Test Suite", () => {
           expect(article[0]).toHaveProperty("created_at");
           expect(article[0]).toHaveProperty("votes");
           expect(article[0]).toHaveProperty("article_img_url");
+        });
+    });
+    test("400: Returns an error if given a article_id of the wrong data type", () => {
+      return request(app)
+        .get("/api/articles/nonexist")
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request");
         });
     });
   });

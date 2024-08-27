@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const { getAllTopics } = require("./controllers/topic-controllers");
-const { serverErrorHandler } = require("./error-handlers");
+const { psqlErrorHandler, serverErrorHandler } = require("./error-handlers");
 const { getApiEndpoints } = require("./controllers/api-controllers");
 const { getArticleById } = require("../api/controllers/article-controllers");
 
@@ -14,6 +14,7 @@ app.all("/*", (req, res) => {
 });
 
 // keep this at the bottom
+app.use(psqlErrorHandler);
 app.use(serverErrorHandler);
 
 module.exports = { app };
