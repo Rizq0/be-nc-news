@@ -10,12 +10,14 @@ const { getApiEndpoints } = require("./controllers/api-controllers");
 const {
   getArticleById,
   getAllArticles,
+  getArticleComments,
 } = require("../api/controllers/article-controllers");
 
 app.get("/api", getApiEndpoints);
 app.get("/api/topics", getAllTopics);
 app.get("/api/articles", getAllArticles);
 app.get("/api/articles/:article_id", getArticleById);
+app.get("/api/articles/:article_id/comments", getArticleComments);
 
 app.all("/*", (req, res) => {
   res.status(404).send({ msg: "Route not found" });

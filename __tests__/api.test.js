@@ -103,6 +103,56 @@ describe("Full API Test Suite", () => {
         });
     });
   });
+  describe("/api/articles/:article_id/comments", () => {
+    test("200: /api/articles/:article_id/comments returns all comments on an article", () => {
+      return request(app)
+        .get("/api/articles/5/comments")
+        .expect(200)
+        .then(({ body: { comments } }) => {
+          expect(comments.length).toBe(2);
+          comments.forEach((comment) => {
+            expect(comment).toHaveProperty("comment_id");
+            expect(comment).toHaveProperty("votes");
+            expect(comment).toHaveProperty("created_at");
+            expect(comment).toHaveProperty("author");
+            expect(comment).toHaveProperty("body");
+            expect(comment).toHaveProperty("article_id");
+          });
+        });
+    });
+    test("200: /api/articles/5/comments to be sorted by created_at ascending order", () => {
+      return request(app)
+        .get("/api/articles/5/comments")
+        .expect(200)
+        .then(({ body: { comments } }) => {
+          expect(comments).toBeSortedBy("created_at", { descending: false });
+        });
+    });
+    test("200 /api/articles/2/comments returns an empty array rather than error when given an article_id that exists but has no comments", () => {
+      return request(app)
+        .get("/api/articles/2/comments")
+        .expect(200)
+        .then(({ body: { comments } }) => {
+          expect(comments).toEqual([]);
+        });
+    });
+    test("400: /api/articles/idonotexist/comments returns an error when given an id that is the wrong data type", () => {
+      return request(app)
+        .get("/api/articles/idonotexist/comments")
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request");
+        });
+    });
+    test("404: /api/articles/15/comments returns an error when given an id that does not exist within articles", () => {
+      return request(app)
+        .get("/api/articles/15/comments")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Not found");
+        });
+    });
+  });
   describe("Error Handling", () => {
     test("404: Route not found when given a bad path", () => {
       return request(app)

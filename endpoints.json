@@ -10,7 +10,7 @@
     }
   },
   "GET /api/articles": {
-    "description": "serves an array of all articles",
+    "description": "serves an array of all articles in descending order from created_at",
     "queries": ["author", "topic", "sort_by", "order"],
     "exampleResponse": {
       "articles": [
@@ -27,7 +27,7 @@
     }
   },
   "GET /api/articles/:article_id": {
-    "description": "serves an array which contains one object which is the selected article, this takes a number as a parameter",
+    "description": "serves an array which contains one object which is the selected article, this is from the article id given",
     "queries": [],
     "exampleResponse": {
       "article": [
@@ -40,6 +40,30 @@
           "created_at": "2020-07-09T20:11:00.000Z",
           "votes": 100,
           "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h700"
+        }
+      ]
+    }
+  },
+  "GET /api/articles/:article_id/comments": {
+    "description": "serves an array which contains each comment as an object, this is from the article id given",
+    "queries": [],
+    "exampleResponse": {
+      "comments": [
+        {
+          "comment_id": 14,
+          "body": "What do you see? I have no idea where this will lead us. This place I speak of, is known as the Black Lodge",
+          "article_id": 5,
+          "author": "icellusedkars",
+          "votes": 16,
+          "created_at": "2020-06-09T05:00:00.000Z"
+        },
+        {
+          "comment_id": 15,
+          "body": "I am 100% sure that we're not completely sure",
+          "article_id": 5,
+          "author": "butter_bridge",
+          "votes": 1,
+          "created_at": "2020-11-24T00:08:00.000Z"
         }
       ]
     }
