@@ -1,5 +1,7 @@
 const connection = require("../../db/connection");
 const format = require("pg-format");
+const { checkArticleExists } = require("../../api/utility-functions/api-utils");
+const e = require("express");
 
 exports.fetchArticleId = (params) => {
   const { article_id } = params;
@@ -31,5 +33,36 @@ exports.fetchAllArticles = (order) => {
   );
   return connection.query(queryString).then(({ rows }) => {
     return rows;
+  });
+};
+
+exports.fetchArticleComments = (article_id, order) => {
+  const promiseCatcher = [];
+  const valueCatcher = [];
+
+  const orderAllowed = ["ASC", "DESC"];
+  if (!orderAllowed.includes(order)) {
+    return Promise.reject({ status: 400, msg: "Bad request" });
+  }
+
+  let queryString = `SELECT * FROM comments `;
+
+  if (article_id) {
+    queryString += `WHERE article_id = $1 `;
+    valueCatcher.push(article_id);
+    promiseCatcher.push(
+      checkArticleExists("articles", "article_id", article_id)
+    );
+  }
+  if (order) {
+    queryString += `ORDER BY created_at ${order}`;
+  }
+  promiseCatcher.push(connection.query(queryString, valueCatcher));
+  return Promise.all(promiseCatcher).then((results) => {
+    if (results.length === 1) {
+      return results[0];
+    } else {
+      return results[1];
+    }
   });
 };
