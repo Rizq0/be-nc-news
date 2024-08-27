@@ -16,7 +16,11 @@ exports.getArticleById = (req, res, next) => {
 
 exports.getAllArticles = (req, res, next) => {
   const { order = "DESC" } = req.params;
-  fetchAllArticles(order).then((articles) => {
-    res.status(200).send({ articles });
-  });
+  fetchAllArticles(order)
+    .then((articles) => {
+      res.status(200).send({ articles });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
