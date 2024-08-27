@@ -48,6 +48,40 @@ describe("Full API Test Suite", () => {
         });
     });
   });
+  describe("/api/articles/:article_id", () => {
+    test("200: /api/articles/:article_id fetches the article with the requested id", () => {
+      return request(app)
+        .get("/api/articles/1")
+        .expect(200)
+        .then(({ body: { article } }) => {
+          expect(article.length).toBe(1);
+          expect(article[0]).toHaveProperty("author");
+          expect(article[0]).toHaveProperty("title");
+          expect(article[0]).toHaveProperty("article_id");
+          expect(article[0]).toHaveProperty("body");
+          expect(article[0]).toHaveProperty("topic");
+          expect(article[0]).toHaveProperty("created_at");
+          expect(article[0]).toHaveProperty("votes");
+          expect(article[0]).toHaveProperty("article_img_url");
+        });
+    });
+    test("400: Returns an error if given a article_id of the wrong data type", () => {
+      return request(app)
+        .get("/api/articles/nonexist")
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request");
+        });
+    });
+    test("404: Returns an error if given an article_id that is out of range", () => {
+      return request(app)
+        .get("/api/articles/20")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Not found");
+        });
+    });
+  });
   describe("Error Handling", () => {
     test("404: Route not found when given a bad path", () => {
       return request(app)
