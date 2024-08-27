@@ -11,6 +11,10 @@ exports.fetchArticleId = (params) => {
   }
 
   return connection.query(queryString, queryArray).then(({ rows }) => {
-    return rows;
+    if (rows.length === 0) {
+      return Promise.reject({ status: 404, msg: "Not found" });
+    } else {
+      return rows;
+    }
   });
 };

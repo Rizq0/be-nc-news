@@ -74,6 +74,15 @@ describe("Full API Test Suite", () => {
           expect(msg).toBe("Bad request");
         });
     });
+    test("404: Returns an error if given an article_id that is out of range", () => {
+      return request(app)
+        .get("/api/articles/20")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          console.log(msg);
+          expect(msg).toBe("Not found");
+        });
+    });
   });
   describe("Error Handling", () => {
     test("404: Route not found when given a bad path", () => {
