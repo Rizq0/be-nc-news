@@ -14,7 +14,7 @@ afterAll(() => {
 });
 
 describe("Full API Test Suite", () => {
-  describe("/api/topics", () => {
+  describe("GET /api/topics", () => {
     test("200: /api/topics fetches all topics from the table", () => {
       const { topicData } = testData;
       return request(app)
@@ -33,7 +33,7 @@ describe("Full API Test Suite", () => {
         });
     });
   });
-  describe("/api", () => {
+  describe("GET /api", () => {
     test("200: /api fetches all api endpoints available to the user", () => {
       return request(app)
         .get("/api")
@@ -48,7 +48,7 @@ describe("Full API Test Suite", () => {
         });
     });
   });
-  describe("/api/articles/:article_id", () => {
+  describe("GET /api/articles/:article_id", () => {
     test("200: /api/articles/:article_id fetches the article with the requested id", () => {
       return request(app)
         .get("/api/articles/1")
@@ -82,7 +82,7 @@ describe("Full API Test Suite", () => {
         });
     });
   });
-  describe("/api/articles", () => {
+  describe("GET /api/articles", () => {
     test("200 /api/articles returns array of all the articles in descending data order", () => {
       return request(app)
         .get("/api/articles")
@@ -103,7 +103,7 @@ describe("Full API Test Suite", () => {
         });
     });
   });
-  describe("/api/articles/:article_id/comments", () => {
+  describe("GET /api/articles/:article_id/comments", () => {
     test("200: /api/articles/:article_id/comments returns all comments on an article", () => {
       return request(app)
         .get("/api/articles/5/comments")
@@ -153,6 +153,7 @@ describe("Full API Test Suite", () => {
         });
     });
   });
+  describe("POST /api/articles/:article_id/comments", () => {});
   describe("Error Handling", () => {
     test("404: Route not found when given a bad path", () => {
       return request(app)
