@@ -153,7 +153,80 @@ describe("Full API Test Suite", () => {
         });
     });
   });
-  describe("POST /api/articles/:article_id/comments", () => {});
+  describe("POST /api/articles/:article_id/comments", () => {
+    test("201: /api/articles/2/comments returns the newly posted comment", () => {
+      const body = {
+        username: "lurker",
+        body: "Born from fire",
+      };
+      return request(app)
+        .post("/api/articles/2/comments")
+        .send(body)
+        .expect(201)
+        .then(({ body: { comment } }) => {
+          expect(comment[0]).toMatchObject({
+            comment_id: expect.any(Number),
+            body: "Born from fire",
+            article_id: 2,
+            author: "lurker",
+            votes: 0,
+            created_at: expect.any(String),
+          });
+        });
+    });
+    test("400: /api/articles/2/comments return a 400 error when the request body key is incorrect", () => {
+      const body = {
+        usernamekeyincorrect: "lurker",
+        body: "Born from fire",
+      };
+      return request(app)
+        .post("/api/articles/2/comments")
+        .send(body)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request");
+        });
+    });
+    test("404: /api/articles/15/comments return a 404 error when an article does not exist", () => {
+      const body = {
+        username: "lurker",
+        body: "Born from fire",
+      };
+      return request(app)
+        .post("/api/articles/15/comments")
+        .send(body)
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Not found");
+        });
+    });
+    test("404: /api/articles/2/comments return a 404 error when a user does not exist", () => {
+      const body = {
+        username: "joe",
+        body: "Born from fire",
+      };
+      return request(app)
+        .post("/api/articles/2/comments")
+        .send(body)
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Not found");
+        });
+    });
+    test("400: /api/articles/idonotexist/comments", () => {
+      const body = {
+        username: "lurker",
+        body: "Born from fire",
+      };
+      return request(app)
+        .post("/api/articles/idonotexist/comments")
+        .send(body)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request");
+        });
+    });
+  });
   describe("Error Handling", () => {
     test("404: Route not found when given a bad path", () => {
       return request(app)
