@@ -22,17 +22,33 @@ exports.fetchArticleId = (params) => {
   });
 };
 
-exports.fetchAllArticles = (order, sortBy) => {
+exports.fetchAllArticles = (order, sortBy, topic) => {
   const orderUppercase = order.toUpperCase();
   const sortByLowercase = sortBy.toLowerCase();
-  const queryString = format(
-    `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.comment_id) AS comment_count FROM articles LEFT JOIN comments USING (article_id) GROUP BY articles.article_id ORDER BY %I %s`,
-    sortByLowercase,
-    orderUppercase
-  );
-  return connection.query(queryString).then(({ rows }) => {
-    return rows;
-  });
+  let topicExists = Promise.resolve();
+
+  let queryString = `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.comment_id) AS comment_count FROM articles LEFT JOIN comments USING (article_id) `;
+  const queryValues = [];
+
+  if (topic) {
+    const topicLowerCase = topic.toLowerCase();
+    queryString += `WHERE topic = %L `;
+    queryValues.push(topicLowerCase);
+    topicExists = checkExists("articles", "topic", topicLowerCase);
+  }
+
+  queryString += `GROUP BY articles.article_id ORDER BY %I %s`;
+  queryValues.push(sortByLowercase, orderUppercase);
+
+  const formattedQuery = format(queryString, ...queryValues);
+
+  return topicExists
+    .then(() => {
+      return connection.query(formattedQuery);
+    })
+    .then(({ rows }) => {
+      return rows;
+    });
 };
 
 exports.fetchArticleComments = (article_id, order) => {
