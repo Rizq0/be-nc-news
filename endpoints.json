@@ -101,5 +101,10 @@
         }
       ]
     }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "deletes an existing comment when given a comment id, no object is returned",
+    "queries": [],
+    "exampleResponse": {}
   }
 }

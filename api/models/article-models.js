@@ -1,8 +1,6 @@
 const connection = require("../../db/connection");
 const format = require("pg-format");
-const {
-  checkExists: checkExists,
-} = require("../../api/utility-functions/api-utils");
+const { checkExists } = require("../../api/utility-functions/api-utils");
 const e = require("express");
 
 exports.fetchArticleId = (params) => {

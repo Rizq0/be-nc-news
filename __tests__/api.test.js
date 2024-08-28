@@ -237,7 +237,7 @@ describe("Full API Test Suite", () => {
         .then(({ body: { update } }) => {
           expect(update[0]).toEqual(
             expect.objectContaining({
-              article_id: expect.any(Number),
+              article_id: 2,
               title: "Sony Vaio; or, The Laptop",
               topic: "mitch",
               author: "icellusedkars",
@@ -258,7 +258,7 @@ describe("Full API Test Suite", () => {
         .then(({ body: { update } }) => {
           expect(update[0]).toEqual(
             expect.objectContaining({
-              article_id: expect.any(Number),
+              article_id: 1,
               title: "Living in the shadow of a great man",
               topic: "mitch",
               author: "butter_bridge",
@@ -305,6 +305,38 @@ describe("Full API Test Suite", () => {
       return request(app)
         .patch("/api/articles/15")
         .send(body)
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Not found");
+        });
+    });
+  });
+  describe("DELETE /api/comments/:comment_id", () => {
+    test("204: /api/comments/1 returns no content, with the correct status code", () => {
+      return request(app)
+        .delete("/api/comments/1")
+        .expect(204)
+        .then(({ body }) => {
+          expect(body).toBeEmpty();
+          return request(app)
+            .get("/api/articles/9/comments")
+            .expect(200)
+            .then(({ body: { comments } }) => {
+              expect(comments.length).toBe(1);
+            });
+        });
+    });
+    test("400: /api/comments/wrongdatatype returns an error when trying to delete when using wrong data type of comment id", () => {
+      return request(app)
+        .delete("/api/comments/wrongdatatype")
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request");
+        });
+    });
+    test("404: /api/comments/100 returns an error if the comment does not exist within the database", () => {
+      return request(app)
+        .delete("/api/comments/100")
         .expect(404)
         .then(({ body: { msg } }) => {
           expect(msg).toBe("Not found");
