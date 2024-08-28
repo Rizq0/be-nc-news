@@ -68,6 +68,24 @@
       ]
     }
   },
+  "GET /api/users": {
+    "description": "serves an array which contains each user as an object",
+    "queries": [],
+    "exampleResponse": {
+      "users": [
+        {
+          "username": "user1",
+          "name": "john doe",
+          "avatar_url": "https://www.avatar.com/content"
+        },
+        {
+          "username": "user2",
+          "name": "joseph doe",
+          "avatar_url": "https://www.avatar.com/content"
+        }
+      ]
+    }
+  },
   "POST /api/articles/:article_id/comments": {
     "description": "an existing user can post a new comment, which the return will be confirmation of the new comment",
     "formatOfBody": { "username": "user", "body": "Sentence goes here" },
