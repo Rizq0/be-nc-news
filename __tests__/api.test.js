@@ -227,6 +227,90 @@ describe("Full API Test Suite", () => {
         });
     });
   });
+  describe("PATCH /api/articles/:article_id", () => {
+    test("200: /api/articles/2 returns the full updated article that has been patched when adding votes", () => {
+      const body = { inc_votes: 1 };
+      return request(app)
+        .patch("/api/articles/2")
+        .send(body)
+        .expect(200)
+        .then(({ body: { update } }) => {
+          expect(update[0]).toEqual(
+            expect.objectContaining({
+              article_id: expect.any(Number),
+              title: "Sony Vaio; or, The Laptop",
+              topic: "mitch",
+              author: "icellusedkars",
+              body: expect.any(String),
+              created_at: expect.any(String),
+              votes: 1,
+              article_img_url: expect.any(String),
+            })
+          );
+        });
+    });
+    test("200: /api/articles/1 returns the full updated article that has been patched when removing votes", () => {
+      const body = { inc_votes: -99 };
+      return request(app)
+        .patch("/api/articles/1")
+        .send(body)
+        .expect(200)
+        .then(({ body: { update } }) => {
+          expect(update[0]).toEqual(
+            expect.objectContaining({
+              article_id: expect.any(Number),
+              title: "Living in the shadow of a great man",
+              topic: "mitch",
+              author: "butter_bridge",
+              body: expect.any(String),
+              created_at: expect.any(String),
+              votes: 1,
+              article_img_url: expect.any(String),
+            })
+          );
+        });
+    });
+    test("400: /api/articles/2 returns an error if the body key that holds the votes value is incorrect", () => {
+      const body = { inc_votez: 1 };
+      return request(app)
+        .patch("/api/articles/2")
+        .send(body)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request");
+        });
+    });
+    test("400 /api/articles/2 returns an error if the body votes value is the wrong data type", () => {
+      const body = { inc_votes: "Wrong Data Type" };
+      return request(app)
+        .patch("/api/articles/2")
+        .send(body)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request");
+        });
+    });
+    test("400 /api/articles/idonotexist returns an error when given an article id is the wrong data type", () => {
+      const body = { inc_votes: 1 };
+      return request(app)
+        .patch("/api/articles/idonotexist")
+        .send(body)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request");
+        });
+    });
+    test("404 /api/articles/15 returns an error when then given article id does not exist in the database", () => {
+      const body = { inc_votes: 1 };
+      return request(app)
+        .patch("/api/articles/15")
+        .send(body)
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Not found");
+        });
+    });
+  });
   describe("Error Handling", () => {
     test("404: Route not found when given a bad path", () => {
       return request(app)

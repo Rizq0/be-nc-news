@@ -84,3 +84,15 @@ exports.setArticleComment = (article, username, comment) => {
       return rows;
     });
 };
+
+exports.updateArticleById = (article, updateVote) => {
+  const promiseCatcher = [checkExists("articles", "article_id", article)];
+  const valueCatcher = [updateVote, article];
+  let queryString = `UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *`;
+
+  return Promise.all(promiseCatcher).then(() => {
+    return connection.query(queryString, valueCatcher).then(({ rows }) => {
+      return rows;
+    });
+  });
+};
