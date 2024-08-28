@@ -60,15 +60,11 @@ exports.postArticleComment = (req, res, next) => {
 exports.patchArticleById = (req, res, next) => {
   const { inc_votes } = req.body;
   const { article_id } = req.params;
-  if (inc_votes === undefined) {
-    res.status(400).send({ msg: "Bad request" });
-  } else {
-    updateArticleById(article_id, inc_votes)
-      .then((update) => {
-        res.status(200).send({ update });
-      })
-      .catch((err) => {
-        next(err);
-      });
-  }
+  updateArticleById(article_id, inc_votes)
+    .then((update) => {
+      res.status(200).send({ update });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };

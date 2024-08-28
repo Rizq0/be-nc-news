@@ -237,7 +237,7 @@ describe("Full API Test Suite", () => {
         .then(({ body: { update } }) => {
           expect(update[0]).toEqual(
             expect.objectContaining({
-              article_id: expect.any(Number),
+              article_id: 2,
               title: "Sony Vaio; or, The Laptop",
               topic: "mitch",
               author: "icellusedkars",
@@ -258,7 +258,7 @@ describe("Full API Test Suite", () => {
         .then(({ body: { update } }) => {
           expect(update[0]).toEqual(
             expect.objectContaining({
-              article_id: expect.any(Number),
+              article_id: 1,
               title: "Living in the shadow of a great man",
               topic: "mitch",
               author: "butter_bridge",
