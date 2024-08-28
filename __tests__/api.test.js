@@ -159,13 +159,48 @@ describe("Full API Test Suite", () => {
           expect(msg).toBe("Bad request");
         });
     });
-    test("200: /api/articles?topic=mitch returns an array with all the articles with the queried topic, using default sort_by and order", () => {
+    test("200: /api/articles?topic=cat returns an array with all the articles with the queried topic, using default sort_by and order", () => {
       return request(app)
         .get("/api/articles?topic=cats")
         .expect(200)
         .then(({ body: { articles } }) => {
           expect(articles.length).toBe(1);
           expect(articles).toBeSortedBy("created_at", { descending: true });
+        });
+    });
+    test("200: /api/articles?sort_by=article_id&order=asc&topic=mitch returns an array with all the articles in ascending order matching the topic given", () => {
+      return request(app)
+        .get("/api/articles?sort_by=article_id&order=asc&topic=mitch")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles.length).toBe(12);
+          expect(articles).toBeSortedBy("article_id", { descending: false });
+        });
+    });
+    test("200: /api/articles?sort_by=article_id&order=asc&topic=CATS returns an array with all the articles in ascending order matching the topic given when topic query is the wrong text case", () => {
+      return request(app)
+        .get("/api/articles?sort_by=article_id&order=asc&topic=CATS")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles.length).toBe(1);
+          expect(articles).toBeSortedBy("article_id", { descending: false });
+        });
+    });
+    test("200: /api/articles?sort_by=article_id&order=asc&topiciswrong=cats returns all articles when topic query is undefined/incorrect", () => {
+      return request(app)
+        .get("/api/articles?sort_by=article_id&order=asc&topiciswrong=cats")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles.length).toBe(13);
+          expect(articles).toBeSortedBy("article_id", { descending: false });
+        });
+    });
+    test("400: /api/articles?sort_by=article_id&order=asc&topic=idonotexist returns an error when topic does not exist in the database", () => {
+      return request(app)
+        .get("/api/articles?sort_by=article_id&order=asc&topic=idonotexist")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Not found");
         });
     });
   });
