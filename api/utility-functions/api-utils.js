@@ -1,7 +1,7 @@
 const format = require("pg-format");
 const connection = require("../../db/connection");
 
-exports.checkArticleExists = (table_name, column_name, value) => {
+exports.checkExists = (table_name, column_name, value) => {
   const queryString = format(
     `SELECT * FROM %I WHERE %I = $1`,
     table_name,

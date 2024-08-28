@@ -1,7 +1,9 @@
+const e = require("express");
 const {
   fetchArticleId,
   fetchAllArticles,
   fetchArticleComments,
+  setArticleComment,
 } = require("../models/article-models");
 
 exports.getArticleById = (req, res, next) => {
@@ -36,4 +38,20 @@ exports.getArticleComments = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
+};
+
+exports.postArticleComment = (req, res, next) => {
+  const { article_id } = req.params;
+  const { username, body } = req.body;
+  if (username === undefined || body === undefined) {
+    res.status(400).send({ msg: "Bad request" });
+  } else {
+    setArticleComment(article_id, username, body)
+      .then((comment) => {
+        res.status(201).send({ comment });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  }
 };

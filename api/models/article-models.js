@@ -1,6 +1,8 @@
 const connection = require("../../db/connection");
 const format = require("pg-format");
-const { checkArticleExists } = require("../../api/utility-functions/api-utils");
+const {
+  checkExists: checkExists,
+} = require("../../api/utility-functions/api-utils");
 const e = require("express");
 
 exports.fetchArticleId = (params) => {
@@ -50,9 +52,7 @@ exports.fetchArticleComments = (article_id, order) => {
   if (article_id) {
     queryString += `WHERE article_id = $1 `;
     valueCatcher.push(article_id);
-    promiseCatcher.push(
-      checkArticleExists("articles", "article_id", article_id)
-    );
+    promiseCatcher.push(checkExists("articles", "article_id", article_id));
   }
   if (order) {
     queryString += `ORDER BY created_at ${order}`;
@@ -65,4 +65,22 @@ exports.fetchArticleComments = (article_id, order) => {
       return results[1];
     }
   });
+};
+
+exports.setArticleComment = (article, username, comment) => {
+  const promiseCatcher = [
+    checkExists("articles", "article_id", article),
+    checkExists("users", "username", username),
+  ];
+  const valueCatcher = [comment, article, username];
+  let queryString =
+    "INSERT INTO comments (body, article_id, author) VALUES ($1, $2, $3) RETURNING *";
+
+  return Promise.all(promiseCatcher)
+    .then(() => {
+      return connection.query(queryString, valueCatcher);
+    })
+    .then(({ rows }) => {
+      return rows;
+    });
 };

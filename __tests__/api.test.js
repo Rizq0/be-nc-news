@@ -14,7 +14,7 @@ afterAll(() => {
 });
 
 describe("Full API Test Suite", () => {
-  describe("/api/topics", () => {
+  describe("GET /api/topics", () => {
     test("200: /api/topics fetches all topics from the table", () => {
       const { topicData } = testData;
       return request(app)
@@ -33,7 +33,7 @@ describe("Full API Test Suite", () => {
         });
     });
   });
-  describe("/api", () => {
+  describe("GET /api", () => {
     test("200: /api fetches all api endpoints available to the user", () => {
       return request(app)
         .get("/api")
@@ -48,7 +48,7 @@ describe("Full API Test Suite", () => {
         });
     });
   });
-  describe("/api/articles/:article_id", () => {
+  describe("GET /api/articles/:article_id", () => {
     test("200: /api/articles/:article_id fetches the article with the requested id", () => {
       return request(app)
         .get("/api/articles/1")
@@ -82,7 +82,7 @@ describe("Full API Test Suite", () => {
         });
     });
   });
-  describe("/api/articles", () => {
+  describe("GET /api/articles", () => {
     test("200 /api/articles returns array of all the articles in descending data order", () => {
       return request(app)
         .get("/api/articles")
@@ -103,7 +103,7 @@ describe("Full API Test Suite", () => {
         });
     });
   });
-  describe("/api/articles/:article_id/comments", () => {
+  describe("GET /api/articles/:article_id/comments", () => {
     test("200: /api/articles/:article_id/comments returns all comments on an article", () => {
       return request(app)
         .get("/api/articles/5/comments")
@@ -150,6 +150,80 @@ describe("Full API Test Suite", () => {
         .expect(404)
         .then(({ body: { msg } }) => {
           expect(msg).toBe("Not found");
+        });
+    });
+  });
+  describe("POST /api/articles/:article_id/comments", () => {
+    test("201: /api/articles/2/comments returns the newly posted comment", () => {
+      const body = {
+        username: "lurker",
+        body: "Born from fire",
+      };
+      return request(app)
+        .post("/api/articles/2/comments")
+        .send(body)
+        .expect(201)
+        .then(({ body: { comment } }) => {
+          expect(comment[0]).toMatchObject({
+            comment_id: expect.any(Number),
+            body: "Born from fire",
+            article_id: 2,
+            author: "lurker",
+            votes: 0,
+            created_at: expect.any(String),
+          });
+        });
+    });
+    test("400: /api/articles/2/comments return a 400 error when a request body key is incorrect", () => {
+      const body = {
+        usernamekeyincorrect: "lurker",
+        body: "Born from fire",
+      };
+      return request(app)
+        .post("/api/articles/2/comments")
+        .send(body)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request");
+        });
+    });
+    test("404: /api/articles/15/comments return a 404 error when an article does not exist", () => {
+      const body = {
+        username: "lurker",
+        body: "Born from fire",
+      };
+      return request(app)
+        .post("/api/articles/15/comments")
+        .send(body)
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Not found");
+        });
+    });
+    test("404: /api/articles/2/comments return a 404 error when a user does not exist", () => {
+      const body = {
+        username: "joe",
+        body: "Born from fire",
+      };
+      return request(app)
+        .post("/api/articles/2/comments")
+        .send(body)
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Not found");
+        });
+    });
+    test("400: /api/articles/idonotexist/comments return a 400 error when an article id given is the wrong data type", () => {
+      const body = {
+        username: "lurker",
+        body: "Born from fire",
+      };
+      return request(app)
+        .post("/api/articles/idonotexist/comments")
+        .send(body)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request");
         });
     });
   });
