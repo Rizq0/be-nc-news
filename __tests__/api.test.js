@@ -159,6 +159,15 @@ describe("Full API Test Suite", () => {
           expect(msg).toBe("Bad request");
         });
     });
+    test("200: /api/articles?topic=mitch returns an array with all the articles with the queried topic, using default sort_by and order", () => {
+      return request(app)
+        .get("/api/articles?topic=cats")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles.length).toBe(1);
+          expect(articles).toBeSortedBy("created_at", { descending: true });
+        });
+    });
   });
   describe("GET /api/articles/:article_id/comments", () => {
     test("200: /api/articles/:article_id/comments returns all comments on an article", () => {
