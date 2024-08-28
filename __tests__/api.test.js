@@ -311,6 +311,16 @@ describe("Full API Test Suite", () => {
         });
     });
   });
+  describe("DELETE /api/comments/:comment_id", () => {
+    test("204: /api/comments/1 returns no content, with the correct status code", () => {
+      return request(app)
+        .delete("/api/comments/1")
+        .expect(204)
+        .then(({ body }) => {
+          expect(body).toBeEmpty();
+        });
+    });
+  });
   describe("Error Handling", () => {
     test("404: Route not found when given a bad path", () => {
       return request(app)
