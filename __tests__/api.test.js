@@ -4,6 +4,7 @@ const connection = require("../db/connection");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data/index");
 const endpointData = require("../endpoints.json");
+const articles = require("../db/data/test-data/articles");
 
 beforeEach(() => {
   return seed(testData);
@@ -83,7 +84,7 @@ describe("Full API Test Suite", () => {
     });
   });
   describe("GET /api/articles", () => {
-    test("200 /api/articles returns array of all the articles in descending data order", () => {
+    test("200 /api/articles returns an array of all the articles in descending data order, default sort using created_at", () => {
       return request(app)
         .get("/api/articles")
         .expect(200)
@@ -100,6 +101,62 @@ describe("Full API Test Suite", () => {
             expect(article).toHaveProperty("comment_count");
           });
           expect(articles).toBeSortedBy("created_at", { descending: true });
+        });
+    });
+    test("200: /api/articles?order=asc returns an array of all the articles in ascending order, using default sort of created_at", () => {
+      return request(app)
+        .get("/api/articles?order=asc")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("created_at", { descending: false });
+        });
+    });
+    test("200: /api/articles?sort_by=article_id returns an array of all the articles in default descending order, using article_id as the column", () => {
+      return request(app)
+        .get("/api/articles?sort_by=article_id")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("article_id", { descending: true });
+        });
+    });
+    test("200: /api/articles?sort_by=article_id&order=asc returns a correctly ordered array when given two non default queries", () => {
+      return request(app)
+        .get("/api/articles?sort_by=article_id&order=asc")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("article_id", { descending: false });
+        });
+    });
+    test("200: /api/articles?sort=article_id&order=desc returns an array when sort_by is incorrectly spelt which will then refers to the default value", () => {
+      return request(app)
+        .get("/api/articles?sort=article_id&order=desc")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("created_at", { descending: true });
+        });
+    });
+    test("400: /api/articles?sort_by=noidea&order=desc returns an error when the sort_by value does not exist", () => {
+      return request(app)
+        .get("/api/articles?sort_by=noidea&order=desc")
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request");
+        });
+    });
+    test("200: /api/articles?sort_by=article_id&ordaa=desc returns an array when order is incorrectly spelt which will then refers to the default value", () => {
+      return request(app)
+        .get("/api/articles?sort_by=article_id&ordaa=asc")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("article_id", { descending: true });
+        });
+    });
+    test("400: /api/articles?sort_by=article_id&order=loop returns an error when order value does not exist", () => {
+      return request(app)
+        .get("/api/articles?sort_by=article_id&order=loop")
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request");
         });
     });
   });

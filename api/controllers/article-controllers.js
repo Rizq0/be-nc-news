@@ -20,7 +20,8 @@ exports.getArticleById = (req, res, next) => {
 
 exports.getAllArticles = (req, res, next) => {
   const { order = "DESC" } = req.query;
-  fetchAllArticles(order)
+  const { sort_by = "created_at" } = req.query;
+  fetchAllArticles(order, sort_by)
     .then((articles) => {
       res.status(200).send({ articles });
     })

@@ -22,14 +22,13 @@ exports.fetchArticleId = (params) => {
   });
 };
 
-exports.fetchAllArticles = (order) => {
-  const orderAllowed = ["ASC", "DESC"];
-  if (!orderAllowed.includes(order)) {
-    return Promise.reject({ status: 400, msg: "Bad request" });
-  }
+exports.fetchAllArticles = (order, sortBy) => {
+  const orderUppercase = order.toUpperCase();
+  const sortByLowercase = sortBy.toLowerCase();
   const queryString = format(
-    `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.comment_id) AS comment_count FROM articles LEFT JOIN comments USING (article_id) GROUP BY articles.article_id ORDER BY articles.created_at %s`,
-    [order]
+    `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, articles.article_img_url, COUNT(comments.comment_id) AS comment_count FROM articles LEFT JOIN comments USING (article_id) GROUP BY articles.article_id ORDER BY %I %s`,
+    sortByLowercase,
+    orderUppercase
   );
   return connection.query(queryString).then(({ rows }) => {
     return rows;
