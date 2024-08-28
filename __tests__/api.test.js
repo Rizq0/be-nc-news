@@ -127,7 +127,7 @@ describe("Full API Test Suite", () => {
           expect(articles).toBeSortedBy("article_id", { descending: false });
         });
     });
-    test("200: /api/articles?sort=article_id&order=desc returns an array when sort_by is incorrectly spelt which will then refers to the default value", () => {
+    test("200: /api/articles?sorted=article_id&order=desc returns a correctly ordered array when sort_by becomes undefined and instead uses the default value", () => {
       return request(app)
         .get("/api/articles?sort=article_id&order=desc")
         .expect(200)
@@ -143,7 +143,7 @@ describe("Full API Test Suite", () => {
           expect(msg).toBe("Bad request");
         });
     });
-    test("200: /api/articles?sort_by=article_id&ordaa=desc returns an array when order is incorrectly spelt which will then refers to the default value", () => {
+    test("200: /api/articles?sort_by=article_id&ordaa=desc returns a correctly ordered array when order becomes undefined and instead uses the default value", () => {
       return request(app)
         .get("/api/articles?sort_by=article_id&ordaa=asc")
         .expect(200)
