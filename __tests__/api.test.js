@@ -227,6 +227,29 @@ describe("Full API Test Suite", () => {
         });
     });
   });
+  describe("PATCH /api/articles/:article_id", () => {
+    test("200: /api/articles/2 returns the full updated article that has been patched", () => {
+      const body = { inc_votes: 1 };
+      return request(app)
+        .patch("/api/articles/2")
+        .send(body)
+        .expect(200)
+        .then(({ body: { update } }) => {
+          expect(update[0]).toEqual(
+            expect.objectContaining({
+              article_id: expect.any(Number),
+              title: "Sony Vaio; or, The Laptop",
+              topic: "mitch",
+              author: "icellusedkars",
+              body: expect.any(String),
+              created_at: expect.any(String),
+              votes: 1,
+              article_img_url: expect.any(String),
+            })
+          );
+        });
+    });
+  });
   describe("Error Handling", () => {
     test("404: Route not found when given a bad path", () => {
       return request(app)

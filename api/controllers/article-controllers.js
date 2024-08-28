@@ -4,6 +4,7 @@ const {
   fetchAllArticles,
   fetchArticleComments,
   setArticleComment,
+  updateArticleById,
 } = require("../models/article-models");
 
 exports.getArticleById = (req, res, next) => {
@@ -54,4 +55,16 @@ exports.postArticleComment = (req, res, next) => {
         next(err);
       });
   }
+};
+
+exports.patchArticleById = (req, res, next) => {
+  const { inc_votes } = req.body;
+  const { article_id } = req.params;
+  updateArticleById(article_id, inc_votes)
+    .then((update) => {
+      res.status(200).send({ update });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
