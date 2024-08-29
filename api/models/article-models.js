@@ -5,15 +5,14 @@ const e = require("express");
 
 exports.fetchArticleId = (params) => {
   const { article_id } = params;
-  let queryString = "SELECT * FROM articles ";
-  let queryArray = [];
+  let queryString = `
+  SELECT articles.*, COUNT(comments.article_id) AS comment_count
+  FROM articles
+  LEFT JOIN comments using (article_id)
+  WHERE articles.article_id = $1
+  GROUP BY articles.article_id`;
 
-  if (article_id) {
-    queryString += "WHERE article_id = $1";
-    queryArray.push(article_id);
-  }
-
-  return connection.query(queryString, queryArray).then(({ rows }) => {
+  return connection.query(queryString, [article_id]).then(({ rows }) => {
     if (rows.length === 0) {
       return Promise.reject({ status: 404, msg: "Not found" });
     } else {

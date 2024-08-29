@@ -82,6 +82,14 @@ describe("Full API Test Suite", () => {
           expect(msg).toBe("Not found");
         });
     });
+    test("200: Feature test, adding comment_count to the returned article", () => {
+      return request(app)
+        .get("/api/articles/1")
+        .expect(200)
+        .then(({ body: { article } }) => {
+          expect(article[0]).toHaveProperty("comment_count");
+        });
+    });
   });
   describe("GET /api/articles", () => {
     test("200 /api/articles returns an array of all the articles in descending data order, default sort using created_at", () => {
