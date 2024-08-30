@@ -468,6 +468,25 @@ describe("Full API Test Suite", () => {
         });
     });
   });
+  describe("PATCH /api/comments/:comment_id", () => {
+    test("200: /api/comments/1 returns the full updated comment with the vote count amended", () => {
+      const body = { inc_votes: 1 };
+      return request(app)
+        .patch("/api/comments/1")
+        .send(body)
+        .expect(200)
+        .then(({ body: { update } }) => {
+          console.log(update);
+          expect(update).toMatchObject({
+            body: "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+            votes: 17,
+            author: "butter_bridge",
+            article_id: 9,
+            created_at: "2020-04-06T12:17:00.000Z",
+          });
+        });
+    });
+  });
   describe("DELETE /api/comments/:comment_id", () => {
     test("204: /api/comments/1 returns no content, with the correct status code", () => {
       return request(app)
