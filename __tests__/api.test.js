@@ -55,14 +55,15 @@ describe("Full API Test Suite", () => {
         .get("/api/articles/1")
         .expect(200)
         .then(({ body: { article } }) => {
-          expect(article).toHaveProperty("author");
-          expect(article).toHaveProperty("title");
-          expect(article).toHaveProperty("article_id");
-          expect(article).toHaveProperty("body");
-          expect(article).toHaveProperty("topic");
-          expect(article).toHaveProperty("created_at");
-          expect(article).toHaveProperty("votes");
-          expect(article).toHaveProperty("article_img_url");
+          expect(article.length).toBe(1);
+          expect(article[0]).toHaveProperty("author");
+          expect(article[0]).toHaveProperty("title");
+          expect(article[0]).toHaveProperty("article_id");
+          expect(article[0]).toHaveProperty("body");
+          expect(article[0]).toHaveProperty("topic");
+          expect(article[0]).toHaveProperty("created_at");
+          expect(article[0]).toHaveProperty("votes");
+          expect(article[0]).toHaveProperty("article_img_url");
         });
     });
     test("400: Returns an error if given a article_id of the wrong data type", () => {
@@ -280,6 +281,21 @@ describe("Full API Test Suite", () => {
         });
     });
   });
+  describe("GET /api/users/:username", () => {
+    test("200: /api/users/:username returns an object from the users table, matching the given username", () => {
+      return request(app)
+        .get("/api/users/butter_bridge")
+        .expect(200)
+        .then(({ body: { user } }) => {
+          expect(user).toMatchObject({
+            username: "butter_bridge",
+            name: "jonny",
+            avatar_url:
+              "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+          });
+        });
+    });
+  });
   describe("POST /api/articles/:article_id/comments", () => {
     test("201: /api/articles/2/comments returns the newly posted comment", () => {
       const body = {
@@ -291,7 +307,7 @@ describe("Full API Test Suite", () => {
         .send(body)
         .expect(201)
         .then(({ body: { comment } }) => {
-          expect(comment[0]).toMatchObject({
+          expect(comment).toMatchObject({
             comment_id: expect.any(Number),
             body: "Born from fire",
             article_id: 2,
@@ -473,7 +489,7 @@ describe("Full API Test Suite", () => {
   describe("Error Handling", () => {
     test("404: Route not found when given a bad path", () => {
       return request(app)
-        .get("/api/topic")
+        .get("/ap/topic")
         .expect(404)
         .then(({ body: { msg } }) => {
           expect(msg).toBe("Route not found");
