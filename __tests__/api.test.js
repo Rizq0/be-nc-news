@@ -437,7 +437,7 @@ describe("Full API Test Suite", () => {
           expect(msg).toBe("Bad request");
         });
     });
-    test("400 /api/articles/2 returns an error if the body votes value is the wrong data type", () => {
+    test("400: /api/articles/2 returns an error if the body votes value is the wrong data type", () => {
       const body = { inc_votes: "Wrong Data Type" };
       return request(app)
         .patch("/api/articles/2")
@@ -447,7 +447,16 @@ describe("Full API Test Suite", () => {
           expect(msg).toBe("Bad request");
         });
     });
-    test("400 /api/articles/idonotexist returns an error when given an article id is the wrong data type", () => {
+    test("400: /api/articles/2 returns an error if no body is sent", () => {
+      return request(app)
+        .patch("/api/articles/2")
+        .send()
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request");
+        });
+    });
+    test("400: /api/articles/idonotexist returns an error when given an article id is the wrong data type", () => {
       const body = { inc_votes: 1 };
       return request(app)
         .patch("/api/articles/idonotexist")
@@ -457,7 +466,7 @@ describe("Full API Test Suite", () => {
           expect(msg).toBe("Bad request");
         });
     });
-    test("404 /api/articles/15 returns an error when then given article id does not exist in the database", () => {
+    test("404: /api/articles/15 returns an error when then given article id does not exist in the database", () => {
       const body = { inc_votes: 1 };
       return request(app)
         .patch("/api/articles/15")
@@ -469,14 +478,13 @@ describe("Full API Test Suite", () => {
     });
   });
   describe("PATCH /api/comments/:comment_id", () => {
-    test("200: /api/comments/1 returns the full updated comment with the vote count amended", () => {
+    test("200: /api/comments/1 returns the full updated comment with the vote count amended, when adding votes", () => {
       const body = { inc_votes: 1 };
       return request(app)
         .patch("/api/comments/1")
         .send(body)
         .expect(200)
         .then(({ body: { update } }) => {
-          console.log(update);
           expect(update).toMatchObject({
             body: "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
             votes: 17,
@@ -484,6 +492,71 @@ describe("Full API Test Suite", () => {
             article_id: 9,
             created_at: "2020-04-06T12:17:00.000Z",
           });
+        });
+    });
+    test("200: /api/comments/1 returns the full updated comment with the vote count amended, when removing votes", () => {
+      const body = { inc_votes: -15 };
+      return request(app)
+        .patch("/api/comments/1")
+        .send(body)
+        .expect(200)
+        .then(({ body: { update } }) => {
+          expect(update).toMatchObject({
+            body: "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+            votes: 1,
+            author: "butter_bridge",
+            article_id: 9,
+            created_at: "2020-04-06T12:17:00.000Z",
+          });
+        });
+    });
+    test("400: /api/comments/1 returns an error when the request body key is incorrect", () => {
+      const body = { inc_votez: 1 };
+      return request(app)
+        .patch("/api/comments/1")
+        .send(body)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request");
+        });
+    });
+    test("400: /api/comments/1 returns an error when the request value is the wrong data type", () => {
+      const body = { inc_votes: "Wrong data type" };
+      return request(app)
+        .patch("/api/comments/1")
+        .send(body)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request");
+        });
+    });
+    test("400: /api/comments/1 returns an error when no body is sent", () => {
+      return request(app)
+        .patch("/api/comments/1")
+        .send()
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request");
+        });
+    });
+    test("400: /api/comments/idonotexist returns an error when the article id provided is the wrong data type", () => {
+      const body = { inc_votes: 1 };
+      return request(app)
+        .patch("/api/comments/idonotexist")
+        .send(body)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request");
+        });
+    });
+    test("404: /api/comments/1000 returns an errpr when the article id provided does not exist in the database", () => {
+      const body = { inc_votes: 1 };
+      return request(app)
+        .patch("/api/comments/1000")
+        .send(body)
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Not found");
         });
     });
   });

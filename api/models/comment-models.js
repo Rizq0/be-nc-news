@@ -1,6 +1,7 @@
 const connection = require("../../db/connection");
 const { checkExists } = require("../../api/utility-functions/api-utils");
 
+// removeCommentById refactor needed
 exports.removeCommentById = (commentid) => {
   const promiseCatcher = [checkExists("comments", "comment_id", commentid)];
   const valueCatcher = [commentid];

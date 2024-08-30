@@ -50,6 +50,7 @@ exports.fetchAllArticles = (order, sortBy, topic) => {
     });
 };
 
+// fetchArticleComments refactor needed
 exports.fetchArticleComments = (article_id, order) => {
   const promiseCatcher = [];
   const valueCatcher = [];
@@ -79,6 +80,7 @@ exports.fetchArticleComments = (article_id, order) => {
   });
 };
 
+// setArticleComment refactor needed
 exports.setArticleComment = (article, username, comment) => {
   const promiseCatcher = [
     checkExists("articles", "article_id", article),
@@ -97,6 +99,7 @@ exports.setArticleComment = (article, username, comment) => {
     });
 };
 
+// updateArticleById refactor needed
 exports.updateArticleById = (article, updateVote) => {
   const promiseCatcher = [checkExists("articles", "article_id", article)];
   const valueCatcher = [updateVote, article];
