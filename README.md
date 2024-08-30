@@ -4,6 +4,8 @@
 
 This project is an API build for the purpose of being a back end service for the accessing of application data programmatically, which will allow information to be provided to the front end architecture.
 
+Skills used while completing this project have been listed as the bottom on this README.
+
 ## Hosted Version
 
 [Hosted Link (Click Me)](https://joe-b-nc-news.onrender.com)
@@ -78,6 +80,48 @@ Once the above have been installed, please follow these instructions below:
 
 - supertest: - 7.0.0
 
+# About This Project
+
+This portfolio project was created as part of a Digital Skills Bootcamp in Software Engineering provided by [Northcoders](https://northcoders.com/).
+
+## Skills Used
+
+- **Key Development Points**
+
+  - JavaScript
+
+    - RESTFUL API design
+    - MVC paradigm
+    - Robust error handling
+    - Resuable utility functions
+    - Handing of asynchronous processes
+
+  - PostgreSQL
+
+    - SQL queries
+    - Creating and seeding databases
+    - Seperating testing, development & production databases
+    - Using parameterized queries to avoid SQL injection risks
+    - dotenv, used to create dynamic access to different databases
+
+  - Hosting
+    - Supabase, configuring and hosting the database online
+    - Render, configuring and hosting the API online
+
 ---
 
-This portfolio project was created as part of a Digital Skills Bootcamp in Software Engineering provided by [Northcoders](https://northcoders.com/)
+- **Testing**
+
+  - Test Driven Development (TDD)
+
+    - Jest
+    - SuperTest
+
+---
+
+- **Source Control**
+
+  - GitHub
+    - Branching
+
+-
