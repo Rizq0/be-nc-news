@@ -102,6 +102,19 @@
       ]
     }
   },
+  "GET /api/users/:username": {
+    "description": "serves an object which contains the user data when give a valid username",
+    "queries": [],
+    "exampleResponse": {
+      "user": [
+        {
+          "username": "user1",
+          "name": "john doe",
+          "avatar_url": "https://www.avatar.com/content"
+        }
+      ]
+    }
+  },
   "POST /api/articles/:article_id/comments": {
     "description": "an existing user can post a new comment, which the return will be confirmation of the new comment",
     "formatOfBody": { "username": "user", "body": "Sentence goes here" },
