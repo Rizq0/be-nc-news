@@ -16,7 +16,7 @@ exports.fetchArticleId = (params) => {
     if (rows.length === 0) {
       return Promise.reject({ status: 404, msg: "Not found" });
     } else {
-      return rows[0];
+      return rows;
     }
   });
 };
@@ -93,7 +93,7 @@ exports.setArticleComment = (article, username, comment) => {
       return connection.query(queryString, valueCatcher);
     })
     .then(({ rows }) => {
-      return rows;
+      return rows[0];
     });
 };
 
