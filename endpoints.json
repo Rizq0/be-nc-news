@@ -42,22 +42,20 @@
     }
   },
   "GET /api/articles/:article_id": {
-    "description": "serves an array which contains one object which is the selected article, this is from the article id given",
+    "description": "serves an article object which contains the requested article when given a valid article number",
     "queries": [],
     "exampleResponse": {
-      "article": [
-        {
-          "article_id": 1,
-          "title": "Living in the shadow of a great man",
-          "topic": "mitch",
-          "author": "butter_bridge",
-          "body": "I found this existence challenging",
-          "created_at": "2020-07-09T20:11:00.000Z",
-          "votes": 100,
-          "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h700",
-          "comment_count": 10
-        }
-      ]
+      "article": {
+        "article_id": 1,
+        "title": "Living in the shadow of a great man",
+        "topic": "mitch",
+        "author": "butter_bridge",
+        "body": "I found this existence challenging",
+        "created_at": "2020-07-09T20:11:00.000Z",
+        "votes": 100,
+        "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h700",
+        "comment_count": 10
+      }
     }
   },
   "GET /api/articles/:article_id/comments": {
@@ -103,16 +101,14 @@
     }
   },
   "GET /api/users/:username": {
-    "description": "serves an object which contains the user data when give a valid username",
+    "description": "serves an object which contains the user data when given a valid username",
     "queries": [],
     "exampleResponse": {
-      "user": [
-        {
-          "username": "user1",
-          "name": "john doe",
-          "avatar_url": "https://www.avatar.com/content"
-        }
-      ]
+      "user": {
+        "username": "user1",
+        "name": "john doe",
+        "avatar_url": "https://www.avatar.com/content"
+      }
     }
   },
   "POST /api/articles/:article_id/comments": {
