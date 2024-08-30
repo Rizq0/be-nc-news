@@ -93,7 +93,7 @@ exports.setArticleComment = (article, username, comment) => {
       return connection.query(queryString, valueCatcher);
     })
     .then(({ rows }) => {
-      return rows;
+      return rows[0];
     });
 };
 
