@@ -2,9 +2,9 @@
 
 ## Project Summary
 
-This project is an API build for the purpose of being a back end service for the accessing of application data programmatically, which will allow information to be provided to the front end architecture.
+This project is an API built to be a backend service for accessing application data programmatically, which will allow information to be provided to the frontend architecture.
 
-Skills used while completing this project have been listed as the bottom on this README.
+Skills used while completing this project have been listed at the bottom of this README.
 
 ## Hosted Version
 
@@ -14,13 +14,13 @@ Please keep in mind that the instance will spin down with inactivity which can d
 
 ## Environment Variables
 
-Environment variables are not provided within this repositiory, they will need to be created manually.
+Environment variables are not provided within this repository, they will need to be created manually.
 
-This project uses [dotenv](https://www.npmjs.com/package/dotenv) which allows the storage of environment variables in seperate files.
+This project uses [dotenv](https://www.npmjs.com/package/dotenv) to store environment variables in separate files.
 
 Instructions to create environment variables to connect to the correct database:
 
-At the root of the project, please create two seperate files starting with .env and include the text within the brackets within the files created:
+At the root of the project, please create two separate files starting with .env and include the text within the brackets within the files created:
 
 .env.test
 
@@ -93,14 +93,14 @@ This portfolio project was created as part of a Digital Skills Bootcamp in Softw
     - RESTFUL API design
     - MVC paradigm
     - Robust error handling
-    - Resuable utility functions
+    - Reusable utility functions
     - Handing of asynchronous processes
 
   - PostgreSQL
 
     - SQL queries
     - Creating and seeding databases
-    - Seperating testing, development & production databases
+    - Separating testing, development & production databases
     - Using parameterized queries to avoid SQL injection risks
     - dotenv, used to create dynamic access to different databases
 
