@@ -295,6 +295,22 @@ describe("Full API Test Suite", () => {
           });
         });
     });
+    test("404: /api/users/idonotexist returns an error when given a username that does not exist", () => {
+      return request(app)
+        .get("/api/users/idonotexist")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Not found");
+        });
+    });
+    test("404: /api/users/1 returns an error when given a username with the wrong data type", () => {
+      return request(app)
+        .get("/api/users/1")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Not found");
+        });
+    });
   });
   describe("POST /api/articles/:article_id/comments", () => {
     test("201: /api/articles/2/comments returns the newly posted comment", () => {
