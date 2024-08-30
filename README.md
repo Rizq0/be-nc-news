@@ -6,7 +6,7 @@ This project is an API build for the purpose of being a back end service for the
 
 ## Hosted Version
 
-[Hosted Link](https://joe-b-nc-news.onrender.com)
+[Hosted Link (Click Me)](https://joe-b-nc-news.onrender.com)
 
 Please keep in mind that the instance will spin down with inactivity which can delay requests by a minimum of 50 seconds.
 
