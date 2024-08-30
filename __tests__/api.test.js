@@ -55,15 +55,14 @@ describe("Full API Test Suite", () => {
         .get("/api/articles/1")
         .expect(200)
         .then(({ body: { article } }) => {
-          expect(article.length).toBe(1);
-          expect(article[0]).toHaveProperty("author");
-          expect(article[0]).toHaveProperty("title");
-          expect(article[0]).toHaveProperty("article_id");
-          expect(article[0]).toHaveProperty("body");
-          expect(article[0]).toHaveProperty("topic");
-          expect(article[0]).toHaveProperty("created_at");
-          expect(article[0]).toHaveProperty("votes");
-          expect(article[0]).toHaveProperty("article_img_url");
+          expect(article).toHaveProperty("author");
+          expect(article).toHaveProperty("title");
+          expect(article).toHaveProperty("article_id");
+          expect(article).toHaveProperty("body");
+          expect(article).toHaveProperty("topic");
+          expect(article).toHaveProperty("created_at");
+          expect(article).toHaveProperty("votes");
+          expect(article).toHaveProperty("article_img_url");
         });
     });
     test("400: Returns an error if given a article_id of the wrong data type", () => {
