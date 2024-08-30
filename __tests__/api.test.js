@@ -203,7 +203,7 @@ describe("Full API Test Suite", () => {
           expect(articles).toBeSortedBy("article_id", { descending: false });
         });
     });
-    test("400: /api/articles?sort_by=article_id&order=asc&topic=idonotexist returns an error when topic does not exist in the database", () => {
+    test("404: /api/articles?sort_by=article_id&order=asc&topic=idonotexist returns an error when topic does not exist in the database", () => {
       return request(app)
         .get("/api/articles?sort_by=article_id&order=asc&topic=idonotexist")
         .expect(404)
