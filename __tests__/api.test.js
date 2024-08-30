@@ -392,7 +392,7 @@ describe("Full API Test Suite", () => {
         .send(body)
         .expect(200)
         .then(({ body: { update } }) => {
-          expect(update[0]).toEqual(
+          expect(update).toEqual(
             expect.objectContaining({
               article_id: 2,
               title: "Sony Vaio; or, The Laptop",
@@ -413,7 +413,7 @@ describe("Full API Test Suite", () => {
         .send(body)
         .expect(200)
         .then(({ body: { update } }) => {
-          expect(update[0]).toEqual(
+          expect(update).toEqual(
             expect.objectContaining({
               article_id: 1,
               title: "Living in the shadow of a great man",

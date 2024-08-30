@@ -104,7 +104,7 @@ exports.updateArticleById = (article, updateVote) => {
 
   return Promise.all(promiseCatcher).then(() => {
     return connection.query(queryString, valueCatcher).then(({ rows }) => {
-      return rows;
+      return rows[0];
     });
   });
 };
