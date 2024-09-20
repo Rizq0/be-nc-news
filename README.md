@@ -8,7 +8,7 @@ Skills used while completing this project have been listed at the bottom of this
 
 ## Hosted Version
 
-[Hosted Link (Click Me)](https://joe-b-nc-news.onrender.com)
+[Hosted Link (Click Me)](https://joe-b-nc-news.onrender.com/api)
 
 Please keep in mind that the instance will spin down with inactivity which can delay requests by a minimum of 50 seconds.
 
