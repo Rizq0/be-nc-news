@@ -1,7 +1,7 @@
 # Northcoders News API
 
 <br/>
-<img src="misc/be-example.mp4" title="Main Demo">
+<img src="misc/be-demo.gif" title="Main Demo">
 <br/>
 
 ## Project Summary
