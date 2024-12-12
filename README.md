@@ -1,5 +1,9 @@
 # Northcoders News API
 
+<br/>
+<img src="misc/be-example.mp4" title="Main Demo">
+<br/>
+
 ## Project Summary
 
 This project is an API built to be a backend service for accessing application data programmatically, which will allow information to be provided to the frontend architecture.
